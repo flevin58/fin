@@ -1,0 +1,11 @@
+[global]
+apps = [ "nvim", "golang", "rustup", "make" ]
+
+[darwin]
+apps = ["ocenaudio"]
+
+[windows]
+apps = ["pippo", "pluto"]
+
+[linux]
+apps = ["penguin", "emacs"]
