@@ -14,7 +14,8 @@ import (
 var installCmd = &cobra.Command{
 	Use:   "install",
 	Short: "Installs the given app(s)",
-	Long:  `Installs the given app(s)`,
+	Long: `Installs the given app(s) passed as arguments
+	To install all the configured apps pass all as the argument`,
 	Run: func(cmd *cobra.Command, args []string) {
 		for _, app := range args {
 			fmt.Printf("Installing %s using %s\n", app, installer.Name)

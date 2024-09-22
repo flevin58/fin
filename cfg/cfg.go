@@ -22,13 +22,13 @@ type OpSysSpecific struct {
 // It is the actual structure used by other modules!
 // Only current Operating System data is available
 // This makes the code more readable and common to all OS
-type MyStuffLocalized struct {
+type FinLocalized struct {
 	Global Global
 	Local  OpSysSpecific
 }
 
 var (
-	MyStuff MyStuffLocalized
+	Fin FinLocalized
 )
 
 func init() {
@@ -39,25 +39,25 @@ func init() {
 	}
 
 	// This is the actual mapping of the .toml file
-	type MyStuffToml struct {
+	type FinToml struct {
 		Global  Global
 		Darwin  OpSysSpecific
 		Linux   OpSysSpecific
 		Windows OpSysSpecific
 	}
 
-	var tomlData MyStuffToml
+	var tomlData FinToml
 	toml.Unmarshal(data, &tomlData)
 
 	// Here the localized stuff
-	MyStuff.Global = tomlData.Global
+	Fin.Global = tomlData.Global
 	switch runtime.GOOS {
 	case "darwin":
-		MyStuff.Local = tomlData.Darwin
+		Fin.Local = tomlData.Darwin
 	case "linux":
-		MyStuff.Local = tomlData.Linux
+		Fin.Local = tomlData.Linux
 	case "windows":
-		MyStuff.Local = tomlData.Windows
+		Fin.Local = tomlData.Windows
 	default:
 		fmt.Println("I'm sorry but your operating system is not supported yet")
 		os.Exit(1)

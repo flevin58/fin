@@ -12,11 +12,11 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "mystuff",
+	Use:   "fin",
 	Short: "A tool to configure your computer / homepage",
 	Long: `A tool to help you manage files installed in your computer,
 automatically install / update apps, create symlinks of dotfiles, etc.
-All is defined in a ~/.config/mystuff.toml file
+All is defined in a ~/.config/fin.toml file
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Installer name:", installer.Name)
@@ -34,13 +34,4 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.mystuff.yaml)")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

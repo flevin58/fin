@@ -18,8 +18,8 @@ var editor string
 // editCmd represents the edit command
 var editCmd = &cobra.Command{
 	Use:   "edit",
-	Short: "Edits the mystuff.toml file using your default editor",
-	Long: `Edits the mystuff.toml file using your default editor
+	Short: "Edits the fin.toml file using your default editor",
+	Long: `Edits the fin.toml file using your default editor
 defined in the $EDITOR environment variable.
 If none is found, then default OS editors will be chosen:
 
@@ -27,7 +27,7 @@ If none is found, then default OS editors will be chosen:
 - Macos: nano
 - Linux: nano
 
-To change it either modify the mystuff.toml file or set the $EDITOR variable
+To change it either modify the fin.toml file or set the $EDITOR variable
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -39,7 +39,7 @@ To change it either modify the mystuff.toml file or set the $EDITOR variable
 			os.Exit(1)
 		}
 
-		fmt.Printf("MyStuff: %+v\n", cfg.MyStuff)
+		fmt.Printf("Fin: %+v\n", cfg.Fin)
 		os.Exit(0)
 
 		// First determine wich editor to use
@@ -66,7 +66,7 @@ To change it either modify the mystuff.toml file or set the $EDITOR variable
 		fmt.Println("Found editor at:", editorPath)
 
 		// Now we can edit the configuration file
-		edit := exec.Command(editorPath, "mystuff.toml")
+		edit := exec.Command(editorPath, "fin.toml")
 		edit.Stdin = os.Stdin
 		edit.Stdout = os.Stdout
 		edit.Stderr = os.Stderr
