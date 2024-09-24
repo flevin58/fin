@@ -3,7 +3,7 @@ module github.com/flevin58/fin
 go 1.23.1
 
 require (
-	github.com/pelletier/go-toml/v2 v2.2.3
+	github.com/BurntSushi/toml v1.4.0
 	github.com/spf13/cobra v1.8.1
 )
 

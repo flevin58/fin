@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/flevin58/fin/cfg"
 	"github.com/flevin58/fin/tools/installer"
 	"github.com/spf13/cobra"
 )
@@ -19,6 +20,10 @@ automatically install / update apps, create symlinks of dotfiles, etc.
 All is defined in a ~/.config/fin.toml file
 `,
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Operating System:", cfg.Fin.Os)
+		fmt.Println("Global Apps:", cfg.Fin.Global.Apps)
+		fmt.Println("Local Apps:", cfg.Fin.Local.Apps)
+		fmt.Println()
 		fmt.Println("Installer name:", installer.Name)
 		fmt.Println("Installer path:", installer.Path)
 	},

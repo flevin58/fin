@@ -9,7 +9,6 @@ import (
 	"os/exec"
 	"runtime"
 
-	"github.com/flevin58/fin/cfg"
 	"github.com/spf13/cobra"
 )
 
@@ -18,6 +17,7 @@ var editor string
 // editCmd represents the edit command
 var editCmd = &cobra.Command{
 	Use:   "edit",
+	Args:  cobra.NoArgs,
 	Short: "Edits the fin.toml file using your default editor",
 	Long: `Edits the fin.toml file using your default editor
 defined in the $EDITOR environment variable.
@@ -31,16 +31,9 @@ To change it either modify the fin.toml file or set the $EDITOR variable
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		// We don't want arguments to this command, just flags
-		if len(args) > 0 {
-			fmt.Println("No arguments expected.")
-			fmt.Println()
-			cmd.Usage()
-			os.Exit(1)
-		}
-
-		fmt.Printf("Fin: %+v\n", cfg.Fin)
-		os.Exit(0)
+		// To debug Fin contents
+		// fmt.Printf("Fin: %+v\n", cfg.Fin)
+		// os.Exit(0)
 
 		// First determine wich editor to use
 		if editor == "" {

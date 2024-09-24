@@ -2,7 +2,7 @@
   apps = ["nvim", "golang", "rustup", "make"]
 
 [darwin]
-  apps = ["ocenaudio"]
+  apps = ["ocenaudio", "dadada"]
 
 [linux]
   apps = ["penguin", "emacs"]
