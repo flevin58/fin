@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"runtime"
 
 	"github.com/flevin58/fin/cfg"
 	"github.com/flevin58/fin/tools/installer"
@@ -14,18 +15,23 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "fin",
+	Args:  cobra.NoArgs,
 	Short: "A tool to configure your computer / homepage",
 	Long: `A tool to help you manage files installed in your computer,
 automatically install / update apps, create symlinks of dotfiles, etc.
 All is defined in a ~/.config/fin.toml file
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Operating System:", cfg.Fin.Os)
-		fmt.Println("Global Apps:", cfg.Fin.Global.Apps)
-		fmt.Println("Local Apps:", cfg.Fin.Local.Apps)
-		fmt.Println()
-		fmt.Println("Installer name:", installer.Name)
-		fmt.Println("Installer path:", installer.Path)
+		if flagDebug {
+			fmt.Println("Fin config file:", cfg.GetTomlPath())
+			fmt.Println("Operating System:", runtime.GOOS)
+			fmt.Println("Apps List:", cfg.Apps)
+			fmt.Println()
+			fmt.Println("Installer name:", installer.Name)
+			fmt.Println("Installer path:", installer.Path)
+			fmt.Println()
+			fmt.Printf("Links: %+v\n", cfg.Links)
+		}
 	},
 }
 
@@ -38,5 +44,12 @@ func Execute() {
 	}
 }
 
+// FLAGS
+
+var (
+	flagDebug bool
+)
+
 func init() {
+	rootCmd.Flags().BoolVarP(&flagDebug, "debug", "d", false, "We print som more debug info")
 }

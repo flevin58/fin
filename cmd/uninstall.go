@@ -22,13 +22,13 @@ var uninstallCmd = &cobra.Command{
 		// Uninstall given apps
 		for _, app := range args {
 			fmt.Printf("Uninstalling %s using %s\n", app, installer.Name)
-			installer.Uninstall(app)
+			err := installer.Uninstall(app)
+			if flagRemove && err == nil {
+				fmt.Printf("Removing %v\n", app)
+				cfg.RemoveApps(app)
+			}
 		}
-
-		// Remove them from fin.toml if -r flag is given
-		if flagRemove {
-			cfg.Fin.RemoveApps(args...)
-		}
+		cfg.SaveCfg()
 	},
 }
 
