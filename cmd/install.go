@@ -32,7 +32,7 @@ To add the file(s) to the fin.toml file specify the -a or -g flag`,
 			return
 		}
 
-		// Now we handle the case of having a lis of apps to install
+		// Now we handle the case of having a list of apps to install
 		for _, app := range args {
 			fmt.Printf("Installing %s using %s\n", app, installer.Name)
 			err := installer.Install(app)
@@ -43,12 +43,6 @@ To add the file(s) to the fin.toml file specify the -a or -g flag`,
 		cfg.SaveCfg()
 	},
 }
-
-// FLAGS
-
-var (
-	flagAdd bool
-)
 
 func init() {
 	rootCmd.AddCommand(installCmd)

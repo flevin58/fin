@@ -32,11 +32,6 @@ var uninstallCmd = &cobra.Command{
 	},
 }
 
-// FLAGS
-var (
-	flagRemove bool
-)
-
 func init() {
 	rootCmd.AddCommand(uninstallCmd)
 	uninstallCmd.Flags().BoolVarP(&flagRemove, "remove", "r", false, "The app will be also removed from fin.toml")

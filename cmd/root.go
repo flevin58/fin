@@ -9,6 +9,7 @@ import (
 	"runtime"
 
 	"github.com/flevin58/fin/cfg"
+	"github.com/flevin58/fin/tools"
 	"github.com/flevin58/fin/tools/installer"
 	"github.com/spf13/cobra"
 )
@@ -31,8 +32,29 @@ All is defined in a ~/.config/fin.toml file
 			fmt.Println("Installer path:", installer.Path)
 			fmt.Println()
 			fmt.Printf("Links: %+v\n", cfg.Links)
+
+			tools.NewTraverse(".").
+				WithOnEnterFolder(OnEnter).
+				WithOnExitFolder(OnExit).
+				WithProcessFile(Process).
+				Run()
 		}
 	},
+}
+
+func OnEnter(folder string) bool {
+	fmt.Println("Entering", folder)
+	return folder != ".git"
+}
+
+func OnExit(folder string) bool {
+	fmt.Println("Leaving", folder)
+	return true
+}
+
+func Process(file string) bool {
+	fmt.Println("Processing", file)
+	return true
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -43,12 +65,6 @@ func Execute() {
 		os.Exit(1)
 	}
 }
-
-// FLAGS
-
-var (
-	flagDebug bool
-)
 
 func init() {
 	rootCmd.Flags().BoolVarP(&flagDebug, "debug", "d", false, "We print som more debug info")

@@ -5,7 +5,8 @@ import (
 	"os"
 	"path"
 	"runtime"
-	"strings"
+
+	"github.com/flevin58/fin/tools"
 )
 
 // Exported vars to other modules
@@ -49,14 +50,14 @@ func GetHomeDir() string {
 }
 
 func GetTomlPath() string {
-	if strings.HasPrefix(Root, "~/") {
-		Root = path.Join("$HOME", Root[2:])
-	}
-	cfgPath := os.ExpandEnv(Root)
+	cfgPath := tools.NormalizePath(Root, "")
 	return path.Join(cfgPath, "fin", fmt.Sprintf("fin_%s.toml", runtime.GOOS))
 }
 
 func init() {
+	// Read fin.env file
+
+	// Read fin.toml file
 	localTomlPath = path.Join(GetHomeDir(), ".config", "fin.toml")
 	LoadCfg()
 }
