@@ -55,8 +55,6 @@ func GetTomlPath() string {
 }
 
 func init() {
-	// Read fin.env file
-
 	// Read fin.toml file
 	localTomlPath = path.Join(GetHomeDir(), ".config", "fin.toml")
 	LoadCfg()

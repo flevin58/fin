@@ -41,10 +41,6 @@ var listCmd = &cobra.Command{
 	},
 }
 
-var (
-	flagSync bool
-)
-
 func init() {
 	rootCmd.AddCommand(listCmd)
 	listCmd.Flags().BoolVarP(&flagSync, "sync", "s", false, "The apps will be synced with the config list")

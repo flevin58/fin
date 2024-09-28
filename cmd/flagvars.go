@@ -5,4 +5,8 @@ var (
 	flagAdd    bool
 	flagDebug  bool
 	flagRemove bool
+	flagSync   bool
+	flagTar    string
+	flagZip    string
+	flagTgz    string
 )
