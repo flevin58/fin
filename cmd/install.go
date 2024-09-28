@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/flevin58/fin/cfg"
-	"github.com/flevin58/fin/tools/installer"
+	"github.com/flevin58/fin/tools"
 	"github.com/spf13/cobra"
 )
 
@@ -26,18 +26,28 @@ To add the file(s) to the fin.toml file specify the -a or -g flag`,
 		// First handle the case we want to install all apps
 		if len(args) == 1 && args[0] == "all" {
 			for _, app := range cfg.Apps {
-				fmt.Printf("Installing %s using %s\n", app, installer.Name)
-				installer.Install(app)
+				fmt.Printf("Installing %s ", app)
+				err := tools.Install(app)
+				if err != nil {
+					fmt.Println(ErrGliph)
+				} else {
+					fmt.Println(OkGliph)
+				}
 			}
 			return
 		}
 
 		// Now we handle the case of having a list of apps to install
 		for _, app := range args {
-			fmt.Printf("Installing %s using %s\n", app, installer.Name)
-			err := installer.Install(app)
-			if err != nil && flagAdd {
-				cfg.AddApp(app)
+			fmt.Printf("Installing %s ", app)
+			err := tools.Install(app)
+			if err != nil {
+				fmt.Println(ErrGliph)
+			} else {
+				fmt.Println(OkGliph)
+				if flagAdd {
+					cfg.AddApp(app)
+				}
 			}
 		}
 		cfg.SaveCfg()

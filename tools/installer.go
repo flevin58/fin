@@ -1,4 +1,4 @@
-package installer
+package tools
 
 import (
 	"bytes"
@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	Name = installerName
-	Path = GetPath()
+	InstallerName = installerName
+	InstallerPath = GetPath()
 )
 
 // Launches a command and returns the stdout as a slice of lines.
@@ -34,7 +34,7 @@ func launchCmd(verbose bool, cmd string, args ...string) ([]string, error) {
 }
 
 func Install(app string) error {
-	_, err := launchCmd(false, Path, "install", app)
+	_, err := launchCmd(false, InstallerPath, "install", app)
 	if err != nil {
 		fmt.Printf("Failed to install %s\n", app)
 	} else {
@@ -44,7 +44,7 @@ func Install(app string) error {
 }
 
 func Uninstall(app string) error {
-	_, err := launchCmd(false, Path, "uninstall", app)
+	_, err := launchCmd(false, InstallerPath, "uninstall", app)
 	if err != nil {
 		fmt.Printf("Failed to uninstall %s\n", app)
 	} else {
@@ -54,7 +54,7 @@ func Uninstall(app string) error {
 }
 
 func Update(app string) error {
-	_, err := launchCmd(false, Path, "upgrade", app)
+	_, err := launchCmd(false, InstallerPath, "upgrade", app)
 	if err != nil {
 		Install(app)
 	} else {
@@ -85,7 +85,7 @@ func GetPath() string {
 }
 
 func List() ([]string, error) {
-	lines, err := launchCmd(false, Path, "leaves")
+	lines, err := launchCmd(false, InstallerPath, "leaves")
 	if err != nil {
 		return []string{}, err
 	}

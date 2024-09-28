@@ -8,7 +8,6 @@ import (
 
 	"github.com/flevin58/fin/cfg"
 	"github.com/flevin58/fin/tools"
-	"github.com/flevin58/fin/tools/installer"
 	"github.com/spf13/cobra"
 )
 
@@ -20,7 +19,7 @@ var listCmd = &cobra.Command{
 	Long: `Lists all apps installed with the default installer (brew, apt, scoop).
 	You can sync the list with the fin config file with the --sync flag`,
 	Run: func(cmd *cobra.Command, args []string) {
-		apps, err := installer.List()
+		apps, err := tools.List()
 		if err != nil {
 			fmt.Println(err.Error())
 			return

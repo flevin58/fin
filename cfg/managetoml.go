@@ -1,11 +1,11 @@
 package cfg
 
 import (
-	"fmt"
 	"os"
 	"runtime"
 
 	"github.com/BurntSushi/toml"
+	"github.com/flevin58/fin/tools"
 )
 
 func loadCfg[T Local | FinToml](tomlfile string) (T, error) {
@@ -37,8 +37,7 @@ func LoadCfg() {
 	// Load the Local part
 	local, err := loadCfg[Local](localTomlPath)
 	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+		tools.ExitWithError(err.Error())
 	}
 
 	// Set variables
@@ -53,8 +52,7 @@ func LoadCfg() {
 		case "linux":
 			Editor = "nano"
 		default:
-			fmt.Printf("I'm sorry but %s is not supported yet", runtime.GOOS)
-			os.Exit(1)
+			tools.ExitWithError("%s is not yet supported", runtime.GOOS)
 		}
 	}
 
@@ -63,8 +61,7 @@ func LoadCfg() {
 	// Load the FinToml structure from the localized file
 	fin, err := loadCfg[FinToml](GetTomlPath())
 	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+		tools.ExitWithError(err.Error())
 	}
 	Apps = fin.Apps
 	Links = fin.Links

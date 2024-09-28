@@ -5,12 +5,10 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"runtime"
 
 	"github.com/flevin58/fin/cfg"
 	"github.com/flevin58/fin/tools"
-	"github.com/flevin58/fin/tools/installer"
 	"github.com/spf13/cobra"
 )
 
@@ -28,8 +26,8 @@ All is defined in a ~/.config/fin.toml file
 			fmt.Println("Operating System:", runtime.GOOS)
 			fmt.Println("Apps List:", cfg.Apps)
 			fmt.Println()
-			fmt.Println("Installer name:", installer.Name)
-			fmt.Println("Installer path:", installer.Path)
+			fmt.Println("Installer name:", tools.InstallerName)
+			fmt.Println("Installer path:", tools.InstallerPath)
 			fmt.Println()
 			fmt.Printf("Links: %+v\n", cfg.Links)
 
@@ -62,7 +60,7 @@ func Process(file string) bool {
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
-		os.Exit(1)
+		tools.ExitWithError(err.Error())
 	}
 }
 

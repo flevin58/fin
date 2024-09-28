@@ -25,21 +25,25 @@ var linkCmd = &cobra.Command{
 			for _, link := range cfg.Links {
 				src := tools.NormalizePath(link.Src, cfg.Root)
 				dst := tools.NormalizePath(link.Dst, "")
-				fmt.Printf("Creating symlink %s", dst)
+				fmt.Printf("Creating symlink %s ", dst)
 
 				// If we cannot find source, exit wit error
 				// Note that (strangely) os.Symlink does not return error in this case!
 				_, err := os.Stat(src)
-				if os.IsNotExist(err) {
-					fmt.Printf(": can't find %s\n", src)
-					return
+				if err != nil {
+					fmt.Println(ErrGliph)
+					if os.IsNotExist(err) {
+						tools.Perror("can't find %s", src)
+						return
+					}
 				}
 
 				err = os.Symlink(src, dst)
 				if err != nil {
-					fmt.Println(":", err.Error())
+					fmt.Println(ErrGliph)
+					tools.Perror(err.Error())
 				} else {
-					fmt.Println(" Ok")
+					fmt.Println(OkGliph)
 				}
 			}
 			return
@@ -48,12 +52,13 @@ var linkCmd = &cobra.Command{
 		// Here we process a single link
 		src := tools.NormalizePath(args[0], cfg.Root)
 		dst := tools.NormalizePath(args[1], "")
-		fmt.Printf("Creating symlink %s", dst)
+		fmt.Printf("Creating symlink %s ", dst)
 		err := os.Symlink(src, dst)
 		if err != nil {
-			fmt.Println(":", err.Error())
+			fmt.Println(ErrGliph)
+			tools.Perror(err.Error())
 		} else {
-			fmt.Println(" Ok")
+			fmt.Println(OkGliph)
 		}
 	},
 }

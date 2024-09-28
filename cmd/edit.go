@@ -4,11 +4,11 @@ Copyright © 2024 Fernando Julio Levin <flevin58@gmail.com>
 package cmd
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 
 	"github.com/flevin58/fin/cfg"
+	"github.com/flevin58/fin/tools"
 	"github.com/spf13/cobra"
 )
 
@@ -32,8 +32,7 @@ To change it either modify the fin.toml file or set the $EDITOR variable
 		// Now get the absolute path to the editor
 		editorPath, err := exec.LookPath(editor)
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			tools.ExitWithError(err.Error())
 		}
 
 		// If flag -e was given, change the default editor
@@ -49,8 +48,7 @@ To change it either modify the fin.toml file or set the $EDITOR variable
 		edit.Stderr = os.Stderr
 		err = edit.Run()
 		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(1)
+			tools.ExitWithError(err.Error())
 		}
 	},
 }
