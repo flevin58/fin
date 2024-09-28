@@ -3,6 +3,7 @@ package tools
 import (
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -27,7 +28,7 @@ func NormalizePath(filePath string, root string) string {
 	if root != "" && !path.IsAbs(filePath) {
 		filePath = os.ExpandEnv(path.Join(root, filePath))
 	}
-	return filePath
+	return filepath.Clean(filePath)
 }
 
 func NormalizePathWithExt(filePath, rootPath, ext string) string {
