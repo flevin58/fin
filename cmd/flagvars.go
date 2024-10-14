@@ -6,12 +6,11 @@ const (
 )
 
 // Variables that will hold flag data
-var (
-	flagAdd     bool
-	flagDebug   bool
-	flagRemove  bool
-	flagSync    bool
-	flagExtract string
-	flagList    string
-	flagOutput  string
-)
+// var (
+// 	flagAdd     bool
+// 	flagDebug   bool
+// 	flagRemove  bool
+// 	flagExtract string
+// 	flagList    string
+// 	flagOutput  string
+// )

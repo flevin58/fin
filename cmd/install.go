@@ -6,55 +6,46 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/alecthomas/kong"
 	"github.com/flevin58/fin/cfg"
 	"github.com/flevin58/fin/tools"
-	"github.com/spf13/cobra"
 )
 
-// installCmd represents the install command
-// When invoked without flags, the apps are installed and added locally
-// When invoked with the global flag, they are added to the global list
-var installCmd = &cobra.Command{
-	Use:   "install",
-	Args:  cobra.MinimumNArgs(1),
-	Short: "Installs the given app(s)",
-	Long: `Installs the given app(s) passed as arguments
-To install all the configured apps pass all as the only argument.
-To add the file(s) to the fin.toml file specify the -a or -g flag`,
-	Run: func(cmd *cobra.Command, args []string) {
+type CmdInstall struct {
+	All  bool     `kong:"optional,group='one',name='all',help='Install all apps in the configuration file'"`
+	Add  bool     `kong:"optional,group='two',name='add',help='Adds the app to the configuration file'"`
+	Apps []string `kong:"arg,required,group='two',name='app',help='The app(s) to be installed'"`
+}
 
-		// First handle the case we want to install all apps
-		if len(args) == 1 && args[0] == "all" {
-			for _, app := range cfg.Apps {
-				fmt.Printf("Installing %s ", app)
-				err := tools.Install(app)
-				if err != nil {
-					fmt.Println(ErrGliph)
-				} else {
-					fmt.Println(OkGliph)
-				}
-			}
-			return
-		}
+func (c *CmdInstall) Run(ctx *kong.Context) error {
 
-		// Now we handle the case of having a list of apps to install
-		for _, app := range args {
+	// First handle the case we want to install all apps
+	if c.All {
+		for _, app := range cfg.Apps {
 			fmt.Printf("Installing %s ", app)
 			err := tools.Install(app)
 			if err != nil {
 				fmt.Println(ErrGliph)
 			} else {
 				fmt.Println(OkGliph)
-				if flagAdd {
-					cfg.AddApp(app)
-				}
 			}
 		}
-		cfg.SaveCfg()
-	},
-}
+		return nil
+	}
 
-func init() {
-	rootCmd.AddCommand(installCmd)
-	installCmd.Flags().BoolVarP(&flagAdd, "add", "a", false, "The app will be added to the config list")
+	// Now we handle the case of having a list of apps to install
+	for _, app := range ctx.Args {
+		fmt.Printf("Installing %s ", app)
+		err := tools.Install(app)
+		if err != nil {
+			fmt.Println(ErrGliph)
+		} else {
+			fmt.Println(OkGliph)
+			if c.Add {
+				cfg.AddApp(app)
+			}
+		}
+	}
+	cfg.SaveCfg()
+	return nil
 }

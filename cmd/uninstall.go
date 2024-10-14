@@ -1,38 +1,30 @@
-/*
-Copyright © 2024 Fernando Julio Levin <flevin58@gmail.com>
-*/
 package cmd
 
 import (
 	"fmt"
 
+	"github.com/alecthomas/kong"
 	"github.com/flevin58/fin/cfg"
 	"github.com/flevin58/fin/tools"
-	"github.com/spf13/cobra"
 )
 
-// uninstallCmd represents the uninstall command
-var uninstallCmd = &cobra.Command{
-	Use:   "uninstall",
-	Args:  cobra.MinimumNArgs(1),
-	Short: "Uninstalls the given app(s)",
-	Long:  `Uninstalls the given app(s)`,
-	Run: func(cmd *cobra.Command, args []string) {
-
-		// Uninstall given apps
-		for _, app := range args {
-			fmt.Printf("Uninstalling %s using %s\n", app, tools.InstallerName)
-			err := tools.Uninstall(app)
-			if flagRemove && err == nil {
-				fmt.Printf("Removing %v\n", app)
-				cfg.RemoveApps(app)
-			}
-		}
-		cfg.SaveCfg()
-	},
+type CmdUninstall struct {
+	Remove bool     `kong:"optional,name='remove',short='r',help='The app will be also removed from fin.toml'"`
+	Apps   []string `kong:"name='apps',help='Name of apps to be removed'"`
 }
 
-func init() {
-	rootCmd.AddCommand(uninstallCmd)
-	uninstallCmd.Flags().BoolVarP(&flagRemove, "remove", "r", false, "The app will be also removed from fin.toml")
+// uninstallCmd represents the uninstall command
+func (c *CmdUninstall) Run(ctx *kong.Context) error {
+
+	// Uninstall given apps
+	for _, app := range c.Apps {
+		fmt.Printf("Uninstalling %s using %s\n", app, tools.InstallerName)
+		err := tools.Uninstall(app)
+		if c.Remove && err == nil {
+			fmt.Printf("Removing %v\n", app)
+			cfg.RemoveApps(app)
+		}
+	}
+	cfg.SaveCfg()
+	return nil
 }

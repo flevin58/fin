@@ -1,68 +1,41 @@
-/*
-Copyright © 2024 Fernando Julio Levin <flevin58@gmail.com>
-*/
 package cmd
 
 import (
 	"os"
 	"os/exec"
 
+	"github.com/alecthomas/kong"
 	"github.com/flevin58/fin/cfg"
-	"github.com/flevin58/fin/tools"
-	"github.com/spf13/cobra"
 )
 
-// editCmd represents the edit command
-var editCmd = &cobra.Command{
-	Use:   "edit",
-	Args:  cobra.NoArgs,
-	Short: "Edits the fin.toml file using your default editor",
-	Long: `Edits the fin.toml file using your default editor
-defined in the $EDITOR environment variable.
-If none is found, then default OS editors will be chosen:
-
-- Windows: notepad.exe
-- Macos: nano
-- Linux: nano
-
-To change it either modify the fin.toml file or set the $EDITOR variable
-`,
-	Run: func(cmd *cobra.Command, args []string) {
-
-		// Now get the absolute path to the editor
-		editorPath, err := exec.LookPath(editor)
-		if err != nil {
-			tools.ExitWithError(err.Error())
-		}
-
-		// If flag -e was given, change the default editor
-		if cmd.Flags().Changed("editor") {
-			cfg.Editor = editor
-			cfg.SaveCfg()
-		}
-
-		// Now we can edit the configuration file
-		edit := exec.Command(editorPath, cfg.GetTomlPath())
-		edit.Stdin = os.Stdin
-		edit.Stdout = os.Stdout
-		edit.Stderr = os.Stderr
-		err = edit.Run()
-		if err != nil {
-			tools.ExitWithError(err.Error())
-		}
-	},
+type CmdEdit struct {
+	Editor string `kong:"optional,name='editor',short='e',help='Use the editor of your choice'"`
 }
 
-// FLAGS
+func (c *CmdEdit) Run(ctx *kong.Context) error {
 
-var (
-	editor string
-)
-
-func init() {
-	if cfg.Editor == "" {
-		cfg.Editor = os.Getenv("EDITOR")
+	// If flag -e was given, change the default editor
+	if c.Editor != "" {
+		// Check if editor exists by getting its absolute path
+		if _, err := exec.LookPath(c.Editor); err != nil {
+			return err
+		}
+		// Found it, so update config file
+		cfg.Editor = c.Editor
+		cfg.SaveCfg()
 	}
-	rootCmd.AddCommand(editCmd)
-	editCmd.Flags().StringVarP(&editor, "editor", "e", cfg.Editor, "Use the editor of your choice")
+
+	// We get the editor from the config file
+	editorPath, err := exec.LookPath(cfg.Editor)
+	if err != nil {
+		return err
+	}
+
+	// Now we can edit the configuration file
+	edit := exec.Command(editorPath, cfg.GetTomlPath())
+	edit.Stdin = os.Stdin
+	edit.Stdout = os.Stdout
+	edit.Stderr = os.Stderr
+	err = edit.Run()
+	return err
 }

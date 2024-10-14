@@ -10,7 +10,7 @@
             "request": "launch",
             "mode": "auto",
             "program": "${fileDirname}",
-            "args": ["edit", "-e", "nano"]
+            "args": ["zip", "extract", "pippo.zip", "./pippo_dir"]
         }
     ]
 }
