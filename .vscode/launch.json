@@ -10,7 +10,7 @@
             "request": "launch",
             "mode": "auto",
             "program": "${fileDirname}",
-            "args": ["zip", "extract", "pippo.zip", "./pippo_dir"]
+            "args": ["install", "pippo", "pluto", "paperino"]
         }
     ]
 }

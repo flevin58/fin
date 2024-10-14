@@ -33,36 +33,6 @@ func launchCmd(verbose bool, cmd string, args ...string) ([]string, error) {
 	return lines, err
 }
 
-func Install(app string) error {
-	_, err := launchCmd(false, InstallerPath, "install", app)
-	if err != nil {
-		fmt.Printf("Failed to install %s\n", app)
-	} else {
-		fmt.Printf("App %s successfully installed\n", app)
-	}
-	return err
-}
-
-func Uninstall(app string) error {
-	_, err := launchCmd(false, InstallerPath, "uninstall", app)
-	if err != nil {
-		fmt.Printf("Failed to uninstall %s\n", app)
-	} else {
-		fmt.Printf("App %s successfully uninstalled\n", app)
-	}
-	return err
-}
-
-func Update(app string) error {
-	_, err := launchCmd(false, InstallerPath, "upgrade", app)
-	if err != nil {
-		Install(app)
-	} else {
-		fmt.Printf("App %s successfully updated\n", app)
-	}
-	return err
-}
-
 func GetPath() string {
 	path, err := exec.LookPath(installerName)
 
