@@ -13,6 +13,7 @@ var cli struct {
 	Tgz       CmdTgz       `kong:"cmd,help='Compress a folder to a tgz archive, or list/extract a tgz archive'"`
 	Uninstall CmdUninstall `kong:"cmd,help='Uninstalls the given app(s)'"`
 	Zip       CmdZip       `kong:"cmd,help='Compress a folder to a zip archive, or list/extract a zip archive'"`
+	Test      CmdTest      `kong:"cmd,help='Test argument parsing by Kong'"`
 }
 
 func ParseAndRun() {

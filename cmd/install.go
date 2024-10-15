@@ -9,9 +9,13 @@ import (
 )
 
 type CmdInstall struct {
-	All  bool     `kong:"optional,group='one',name='all',help='Install all apps in the configuration file'"`
-	Add  bool     `kong:"optional,group='two',name='add',help='Adds the app to the configuration file'"`
-	Apps []string `kong:"arg,required,group='two',name='app',help='The app(s) to be installed'"`
+	All  bool     `kong:"xor='all',help='Install all the apps in the configuration file'"`
+	Add  bool     `kong:"optional,help='Adds the app to the configuration file'"`
+	Apps []string `kong:"xor='all',arg,required,name='app',help='The app(s) to be installed'"`
+}
+
+func (c *CmdInstall) Help() string {
+	return "pippo"
 }
 
 func (c *CmdInstall) Run(ctx *kong.Context) error {

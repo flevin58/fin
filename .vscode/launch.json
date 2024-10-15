@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Package",
+            "name": "Debug fin",
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "${fileDirname}",
-            "args": ["install", "pippo", "pluto", "paperino"]
+            "program": "${workspaceFolder}/main.go",
+            "args": ["test", "pippo", "--all"]
         }
     ]
 }

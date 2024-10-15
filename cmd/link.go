@@ -10,8 +10,8 @@ import (
 )
 
 type CmdLink struct {
-	Add bool   `kong:"optional,name='add',help='Adds the symlink to the configuration file'"`
-	All bool   `kong:"optional,name='all',help='Process all links in the configuration file'"`
+	Add bool   `kong:"optional,xor='x',help='Adds the symlink to the configuration file'"`
+	All bool   `kong:"optional,xor='x',help='Process all links in the configuration file'"`
 	Src string `kong:"arg,name='source'"`
 	Dst string `kong:"arg,name='dest'"`
 }
@@ -20,6 +20,9 @@ func (c *CmdLink) Run(ctx *kong.Context) error {
 
 	// First handle the case we want to process all links
 	if c.All {
+		if len(ctx.Args) != 2 {
+			return fmt.Errorf("flag --all should be used alone")
+		}
 		for _, link := range cfg.Links {
 			src := tools.NormalizePath(link.Src, cfg.Root)
 			dst := tools.NormalizePath(link.Dst, "")
